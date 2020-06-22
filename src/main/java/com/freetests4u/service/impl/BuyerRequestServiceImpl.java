@@ -44,6 +44,7 @@ public class BuyerRequestServiceImpl implements BuyerRequestService{
 		// TODO Auto-generated method stub
 		if(sellerRequestId==0) {
 		buyerRequestDao.createBuyerRequest(br);
+		// will add functionality to notify buyers when the book will be available in store & with the provided price
 		}
 		else {
 			

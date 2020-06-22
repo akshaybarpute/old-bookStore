@@ -13,13 +13,14 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.freetests4u.dto.LoginType;
+
 @Entity
 @Table(name="users")
 public class User {
 
 	@Id
 	@Column(name="id")
-//	@GeneratedValue(strategy=GenerationType.AUTO)
 	private String id ;
 	
 	@NotEmpty(message="username required")
@@ -32,7 +33,6 @@ public class User {
 	@Column(name="email")
 	private String email;
 	
-//	@Transient
 	@NotNull(message="socialId or password required")
 	@NotEmpty(message="socialId or password required")
 	@Column(name="socialid")
@@ -43,6 +43,11 @@ public class User {
 	
 	@Column(name="lastlogindate")
 	private Timestamp lastloginDate;
+	
+	@NotNull(message="loginType required")
+	@NotEmpty(message="loginType required")
+	@Column(name="logintype")
+	private String loginType;
 
 	public String getId() {
 		return id;
@@ -91,6 +96,15 @@ public class User {
 	public void setLastloginDate(Timestamp lastloginDate) {
 		this.lastloginDate = lastloginDate;
 	}
+
+	public String getLoginType() {
+		return loginType;
+	}
+
+	public void setLoginType(String loginType) {
+		this.loginType = loginType;
+	}
+
 	
 	
 }

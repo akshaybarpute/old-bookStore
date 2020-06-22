@@ -2,7 +2,6 @@ package com.freetests4u.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fasterxml.uuid.Generators;
 import com.freetests4u.dto.BookSearchRequest;
 import com.freetests4u.dto.CreateBookRequest;
 import com.freetests4u.dto.CreateBookResponse;
@@ -44,7 +42,7 @@ public class BookController {
 		catch(Exception e) {
 			System.out.println("error message: "+ e.getMessage());
 			String m = e.getMessage();
-			return new ResponseEntity<CreateBookResponse>(new CreateBookResponse(null,m,true),HttpStatus.METHOD_FAILURE); 
+			return new ResponseEntity<CreateBookResponse>(new CreateBookResponse(null,m,true),HttpStatus.OK); 
 		}
 	}
 	
@@ -53,8 +51,6 @@ public class BookController {
 	@RequestMapping(value="/book/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Book> getBook(@PathVariable int id){	
 		
-		UUID uuid1 = Generators.timeBasedGenerator().generate();
-		System.out.println("uuid: "+ uuid1+ " ");
 		return new ResponseEntity<Book>(bookService.getBook(id), HttpStatus.OK);
 	}
 	
@@ -96,7 +92,7 @@ public class BookController {
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<GetListResponse>(new GetListResponse(true, e.getMessage(),new ArrayList<Book>()), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<GetListResponse>(new GetListResponse(true, e.getMessage(),new ArrayList<Book>()), HttpStatus.OK);
 	}
 		
 		

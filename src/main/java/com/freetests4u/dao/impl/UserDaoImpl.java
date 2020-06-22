@@ -39,15 +39,14 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	@Override
-	public User getUser(String email, String password) {
+	public User getUser(String email) {
 		// TODO Auto-generated method stub
 		
-		String hql = "from User where email=:email AND socialId=:socialId";
+		String hql = "from User where email=:email";
 		
 		
 		return (User) sessionFactory.getCurrentSession().createQuery(hql)
 				.setParameter("email", email)
-				.setParameter("socialId", password)
 				.uniqueResult();
 	}
 
