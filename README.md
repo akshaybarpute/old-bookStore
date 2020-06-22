@@ -1,6 +1,6 @@
-# Project Title
+# Old Book Store
 
-This is my personel project old-BookStore. This project enables users to sell their old books online & also enable them to buy old books
+This is my hobby project old-BookStore. This project enables users to sell their old books online & also enable them to buy old books
 online at cheaper prices. The jwt token authentication is used in the project. So, If someone wants any reference code for jwt authentication
 implementation in spring-boot java, then it will be good example for them.
 
