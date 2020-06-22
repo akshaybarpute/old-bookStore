@@ -20,6 +20,7 @@ public class StoreDaoImpl implements StoreDao{
 	@Autowired
 	SessionFactory sessionFactory;
 	
+	@Transactional
 	@Override
 	public void updateStore(int bookId, StoreAction action) {
 		// TODO Auto-generated method stub
@@ -29,10 +30,10 @@ public class StoreDaoImpl implements StoreDao{
 		try {
 			String hql ="";
 			if(action==StoreAction.INCREMENT) {
-			hql = "UPDATE Store s SET s.count=s.count+1";
+			hql = "UPDATE Store s SET s.bookCount=s.bookCount+1";
 			}
 			else if(action==StoreAction.DECREMENT){
-				hql = "UPDATE Store s SET s.count=s.count-1";
+				hql = "UPDATE Store s SET s.bookCount=s.bookCount-1";
 			}
 			
 			int count = session.createQuery(hql).executeUpdate();

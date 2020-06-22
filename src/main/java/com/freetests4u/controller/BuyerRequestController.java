@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.freetests4u.dto.CreateBuyerRequest;
 import com.freetests4u.dto.GenericResponseObject;
 import com.freetests4u.model.BuyerRequest;
 import com.freetests4u.service.BuyerRequestService;
@@ -22,15 +23,16 @@ public class BuyerRequestController {
 	@Autowired
 	private BuyerRequestService buyerRequestService;
 	
+	//will receive the sellerRequestId here
 	@RequestMapping(value="/registerBuyerRequest", method=RequestMethod.POST)
-	ResponseEntity<GenericResponseObject<BuyerRequest>> createBuyerRequest(@RequestBody BuyerRequest br){
+	ResponseEntity<GenericResponseObject<CreateBuyerRequest>> createBuyerRequest(@RequestBody CreateBuyerRequest br){
 		try {
-			buyerRequestService.registerBuyerRequest(br);
-			return new ResponseEntity<GenericResponseObject<BuyerRequest>>(new GenericResponseObject<BuyerRequest>(br,"created",false), HttpStatus.OK);
+			buyerRequestService.registerBuyerRequest(br.getBuyerRequest(),br.getSellerRequestId());
+			return new ResponseEntity<GenericResponseObject<CreateBuyerRequest>>(new GenericResponseObject<CreateBuyerRequest>(br,"created",false), HttpStatus.OK);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<GenericResponseObject<BuyerRequest>>(new GenericResponseObject<BuyerRequest>(null,e.getMessage(),true), HttpStatus.OK);
+			return new ResponseEntity<GenericResponseObject<CreateBuyerRequest>>(new GenericResponseObject<CreateBuyerRequest>(null,e.getMessage(),true), HttpStatus.OK);
 		}
 	}
 	

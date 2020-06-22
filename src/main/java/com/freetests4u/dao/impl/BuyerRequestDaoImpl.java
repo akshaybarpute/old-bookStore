@@ -2,6 +2,8 @@ package com.freetests4u.dao.impl;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -19,26 +21,13 @@ public class BuyerRequestDaoImpl implements BuyerRequestDao{
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	@Transactional
 	@Override
 	public void createBuyerRequest(BuyerRequest br) {
 		// TODO Auto-generated method stub
 		
-		Session session = sessionFactory.openSession();
-		Transaction tx=null;
-		
-		try {
-			tx = session.beginTransaction();
-			session.save(br);
-			tx.commit();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			tx.rollback();
-			throw e;
-		}
-		finally {
-			session.close();
-		}
+		Session session = sessionFactory.getCurrentSession();
+		session.save(br);
 	}
 
 	@SuppressWarnings("unchecked")

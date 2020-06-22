@@ -1,7 +1,10 @@
 package com.freetests4u.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -48,6 +51,20 @@ public class SellerRequestController {
 			return new ResponseEntity<GenericResponseObject<SellerRequest>>(new GenericResponseObject<SellerRequest>(null,e.getMessage(),true),HttpStatus.OK); 
 		}
 	
+	}
+	
+	
+	@RequestMapping(value="/getSellerRequestsForBook",method=RequestMethod.GET)
+	ResponseEntity<GenericResponseObject<List<SellerRequest>>> getSellerRequestsForBook(int limit,int offset,Integer id, String name){
+		
+		try {
+			int lId = id==null ? 0 :id.intValue();
+			List<SellerRequest> sl= sellerRequestService.getSellerRequestListByBook(limit, offset, lId, name);
+			return new ResponseEntity<GenericResponseObject<List<SellerRequest>>>(new GenericResponseObject<List<SellerRequest>>(sl,"success",false),HttpStatus.OK);
+		}
+		catch(Exception e) {
+			return new ResponseEntity<GenericResponseObject<List<SellerRequest>>>(new GenericResponseObject<List<SellerRequest>>(null,e.getMessage(),true),HttpStatus.OK);
+		}
 	}
 
 }

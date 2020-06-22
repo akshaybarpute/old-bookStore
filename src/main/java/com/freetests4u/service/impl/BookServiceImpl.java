@@ -29,14 +29,7 @@ public class BookServiceImpl implements BookService{
 	@Override
 	public void addBook(Book b) throws DuplicateBookEntryException {
 		// TODO Auto-generated method stub
-		
-//		List<Book> old = bookDao.getBook(b.getTitle().toLowerCase());
-//		if(old.size()>0) {
-//			throw new DuplicateBookEntryException("Book with same name already exists");
-//		}		
-		
-//		Sessio	
-		
+				
 	      TransactionStatus status=null;
 	      try {
 	         status = TransactionAspectSupport.currentTransactionStatus();

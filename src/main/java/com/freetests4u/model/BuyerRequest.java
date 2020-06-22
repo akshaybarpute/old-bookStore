@@ -24,8 +24,6 @@ public class BuyerRequest {
 	@Column(name="id")
 	private int id;
 	
-	@NotEmpty
-	@NotNull
 	@Column(name="bid_price")
 	private int bidPrice;
 	

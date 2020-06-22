@@ -1,5 +1,7 @@
 package com.freetests4u.service.impl;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +10,7 @@ import com.freetests4u.dto.StoreAction;
 import com.freetests4u.model.Store;
 import com.freetests4u.service.StoreService;
 
+//@Transactional
 @Service
 public class StoreServiceImpl implements StoreService{
 

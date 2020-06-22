@@ -2,6 +2,8 @@ package com.freetests4u.service.impl;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import com.freetests4u.model.Book;
 import com.freetests4u.model.SellerRequest;
 import com.freetests4u.service.SellerRequestService;
 
+@Transactional
 @Service
 public class SellerRequestServiceImpl implements SellerRequestService {
 
@@ -38,6 +41,7 @@ public class SellerRequestServiceImpl implements SellerRequestService {
 		if(book==null||book.getId()==0) {
 			throw new BookNotFoundException("No Such Book exists");
 		}
+		sr.setActive(true);
 		sellerRequestDao.registerRequest(sr);
 		storeDao.updateStore(sr.getBookId(),StoreAction.INCREMENT);
 		}
