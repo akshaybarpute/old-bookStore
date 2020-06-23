@@ -21,8 +21,15 @@ public class BuyerSellerMappingController {
 	
 	@RequestMapping(value="/transaction/{id}",method=RequestMethod.GET)
 	ResponseEntity<GenericResponseObject<BuyerSellerMapping>> getTransactionById(@PathVariable int id){
-		BuyerSellerMapping mapping = service.getBuyerSellerMappingById(id);
 		
-		return new ResponseEntity<GenericResponseObject<BuyerSellerMapping>> (new GenericResponseObject<BuyerSellerMapping>(mapping,"success",false),HttpStatus.OK);
+		try {
+		BuyerSellerMapping mapping = service.getBuyerSellerMappingById(id);
+		return new ResponseEntity<> (new GenericResponseObject<>(mapping,"success",false),HttpStatus.OK);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<> (new GenericResponseObject<>(null,"failed",true),HttpStatus.OK);
+		}
+		
 	}
 }

@@ -1,6 +1,5 @@
 package com.freetests4u.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -16,8 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.freetests4u.dto.BookSearchRequest;
 import com.freetests4u.dto.CreateBookRequest;
-import com.freetests4u.dto.CreateBookResponse;
-import com.freetests4u.dto.GetListResponse;
+import com.freetests4u.dto.GenericResponseObject;
 import com.freetests4u.model.Book;
 import com.freetests4u.service.BookService;
 
@@ -29,7 +27,7 @@ public class BookController {
 	private BookService bookService;
 	
 	@RequestMapping(value="/addBook", method=RequestMethod.POST)
-	public ResponseEntity<CreateBookResponse> addBook(@RequestBody CreateBookRequest bookRequest){	
+	public ResponseEntity<GenericResponseObject<Book>> addBook(@RequestBody CreateBookRequest bookRequest){	
 		
 		try {
 			
@@ -37,21 +35,28 @@ public class BookController {
 			BeanUtils.copyProperties(bookRequest, b);
 		bookService.addBook(b);	
 		
-		return new ResponseEntity<CreateBookResponse>(new CreateBookResponse(b,"created",false),HttpStatus.CREATED);
+		return new ResponseEntity<>(new GenericResponseObject<Book>(b,"created",false),HttpStatus.CREATED);
 		}
 		catch(Exception e) {
 			System.out.println("error message: "+ e.getMessage());
 			String m = e.getMessage();
-			return new ResponseEntity<CreateBookResponse>(new CreateBookResponse(null,m,true),HttpStatus.OK); 
+			return new ResponseEntity<>(new GenericResponseObject<Book>(null,m,true),HttpStatus.OK);
 		}
 	}
 	
 	
 	
 	@RequestMapping(value="/book/{id}", method=RequestMethod.GET)
-	public ResponseEntity<Book> getBook(@PathVariable int id){	
+	public ResponseEntity<GenericResponseObject<Book>> getBook(@PathVariable int id){	
 		
-		return new ResponseEntity<Book>(bookService.getBook(id), HttpStatus.OK);
+		try {
+		Book b = bookService.getBook(id);
+		return new ResponseEntity<>(new GenericResponseObject<>(b,"success",false), HttpStatus.OK);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(new GenericResponseObject<>(null,"failed",true), HttpStatus.OK);
+		}
 	}
 	
 	
@@ -65,22 +70,23 @@ public class BookController {
 	
 	
 	@RequestMapping(value="/getBooks", method=RequestMethod.GET)
-	public ResponseEntity<GetListResponse> getList(@RequestParam int limit, @RequestParam int offset){
+	public ResponseEntity<GenericResponseObject<List<Book>>> getList(@RequestParam int limit, @RequestParam int offset){
 		
 		try {
-		return new ResponseEntity<GetListResponse>(new GetListResponse(false,"success", bookService.getBooks(limit, offset)), HttpStatus.OK);
+			List<Book> l = bookService.getBooks(limit, offset);
+		return new ResponseEntity<>(new GenericResponseObject<>(l,"success",false),HttpStatus.OK);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 			
-			return new ResponseEntity<GetListResponse>(new GetListResponse(true, e.getMessage(), null),HttpStatus.OK);
+			return new ResponseEntity<>(new GenericResponseObject<>(null,"success",false),HttpStatus.OK);
 		}
 	}
 	
 	
 	
 	@RequestMapping(value="/getBooks", method=RequestMethod.POST)
-	public ResponseEntity<GetListResponse> getList(@RequestBody BookSearchRequest bookRequest){
+	public ResponseEntity<GenericResponseObject<List<Book>>> getList(@RequestBody BookSearchRequest bookRequest){
 		
 		try {
 			
@@ -88,20 +94,27 @@ public class BookController {
 						
 			List<Book> l = bookService.getBooks(bookRequest);
 			
-			return new ResponseEntity<GetListResponse>(new GetListResponse(false, "success",l), HttpStatus.OK);
+			return new ResponseEntity<>(new GenericResponseObject<>(l,"success",false),HttpStatus.OK);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<GetListResponse>(new GetListResponse(true, e.getMessage(),new ArrayList<Book>()), HttpStatus.OK);
+			return new ResponseEntity<>(new GenericResponseObject<>(null,"failed",true),HttpStatus.OK);
 	}
-		
 		
 	}
 	
+	
 	@RequestMapping(value="/getBook", method=RequestMethod.GET)
-	public ResponseEntity<GetListResponse> getBook(@RequestParam String name){
+	public ResponseEntity<GenericResponseObject<List<Book>>> getBook(@RequestParam String name){
+		
+		try {
 		List<Book> l = bookService.getBook(name);
-		return new ResponseEntity<GetListResponse>(new GetListResponse(false,"success",l),HttpStatus.OK);
+		return new ResponseEntity<>(new GenericResponseObject<>(l,"success",false),HttpStatus.OK);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(new GenericResponseObject<>(null,"failed",false),HttpStatus.OK);
+		}
 	}
 	
 	

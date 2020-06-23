@@ -24,11 +24,11 @@ public class StoreController {
 		try {
 			Store store = storeService.getCountByBookId(bookId);
 			
-			return new ResponseEntity<GenericResponseObject<Store>>(new GenericResponseObject<Store>(store,"success",false),HttpStatus.OK);
+			return new ResponseEntity<>(new GenericResponseObject<>(store,"success",false),HttpStatus.OK);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<GenericResponseObject<Store>>(new GenericResponseObject<Store>(null,"success",false),HttpStatus.OK); 
+			return new ResponseEntity<>(new GenericResponseObject<>(null,"failed",true),HttpStatus.OK); 
 		}
 	}
 }

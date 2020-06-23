@@ -30,11 +30,11 @@ public class SellerRequestController {
 		
 		try {
 			SellerRequest sr = sellerRequestService.getSellerRequestById(id);
-			return new ResponseEntity<GenericResponseObject<SellerRequest>>(new GenericResponseObject<SellerRequest>(sr,"created",false),HttpStatus.OK);
+			return new ResponseEntity<>(new GenericResponseObject<>(sr,"created",false),HttpStatus.OK);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<GenericResponseObject<SellerRequest>>(new GenericResponseObject<SellerRequest>(null,e.getMessage(),true),HttpStatus.OK); 
+			return new ResponseEntity<>(new GenericResponseObject<>(null,e.getMessage(),true),HttpStatus.OK); 
 		}
 	}
 	
@@ -45,11 +45,11 @@ public class SellerRequestController {
 		
 		try {
 			sellerRequestService.createSellerRequestService(sr);
-			return new ResponseEntity<GenericResponseObject<SellerRequest>>(new GenericResponseObject<SellerRequest>(sr,"success",false),HttpStatus.OK);
+			return new ResponseEntity<>(new GenericResponseObject<SellerRequest>(sr,"success",false),HttpStatus.OK);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<GenericResponseObject<SellerRequest>>(new GenericResponseObject<SellerRequest>(null,e.getMessage(),true),HttpStatus.OK); 
+			return new ResponseEntity<>(new GenericResponseObject<SellerRequest>(null,e.getMessage(),true),HttpStatus.OK); 
 		}
 	
 	}
@@ -61,10 +61,11 @@ public class SellerRequestController {
 		try {
 			int lId = id==null ? 0 :id.intValue();
 			List<SellerRequest> sl= sellerRequestService.getSellerRequestListByBook(limit, offset, lId, name);
-			return new ResponseEntity<GenericResponseObject<List<SellerRequest>>>(new GenericResponseObject<List<SellerRequest>>(sl,"success",false),HttpStatus.OK);
+			return new ResponseEntity<>(new GenericResponseObject<>(sl,"success",false),HttpStatus.OK);
 		}
 		catch(Exception e) {
-			return new ResponseEntity<GenericResponseObject<List<SellerRequest>>>(new GenericResponseObject<List<SellerRequest>>(null,e.getMessage(),true),HttpStatus.OK);
+			e.printStackTrace();
+			return new ResponseEntity<>(new GenericResponseObject<>(null,e.getMessage(),true),HttpStatus.OK);
 		}
 	}
 

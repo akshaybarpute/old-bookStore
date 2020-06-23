@@ -28,11 +28,11 @@ public class BuyerRequestController {
 	ResponseEntity<GenericResponseObject<CreateBuyerRequest>> createBuyerRequest(@RequestBody CreateBuyerRequest br){
 		try {
 			buyerRequestService.registerBuyerRequest(br.getBuyerRequest(),br.getSellerRequestId());
-			return new ResponseEntity<GenericResponseObject<CreateBuyerRequest>>(new GenericResponseObject<CreateBuyerRequest>(br,"created",false), HttpStatus.OK);
+			return new ResponseEntity<>(new GenericResponseObject<>(br,"created",false), HttpStatus.OK);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<GenericResponseObject<CreateBuyerRequest>>(new GenericResponseObject<CreateBuyerRequest>(null,e.getMessage(),true), HttpStatus.OK);
+			return new ResponseEntity<>(new GenericResponseObject<>(null,e.getMessage(),true), HttpStatus.OK);
 		}
 	}
 	
@@ -42,13 +42,14 @@ public class BuyerRequestController {
 		
 		try {
 		BuyerRequest buyerRequest =  buyerRequestService.getBuyerRequestById(id);
-		return new ResponseEntity<GenericResponseObject<BuyerRequest>>(new GenericResponseObject<BuyerRequest>(buyerRequest,"success",false), HttpStatus.OK);
+		return new ResponseEntity<>(new GenericResponseObject<>(buyerRequest,"success",false), HttpStatus.OK);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<GenericResponseObject<BuyerRequest>>(new GenericResponseObject<BuyerRequest>(null,e.getMessage(),true), HttpStatus.OK);
+			return new ResponseEntity<>(new GenericResponseObject<>(null,e.getMessage(),true), HttpStatus.OK);
 		}
 	}
+	
 	
 	
 	@RequestMapping(value="/getBuyerRequestsForBook",method=RequestMethod.GET)
@@ -63,11 +64,11 @@ public class BuyerRequestController {
 			
 		List<BuyerRequest> buyerRequestList = buyerRequestService.getBuyerRequestsForBook(bookIdVal, bookName, offsetVal, limitVal);
 		
-		return new ResponseEntity<GenericResponseObject<List<BuyerRequest>>>(new GenericResponseObject<List<BuyerRequest>>(buyerRequestList,"success",false),HttpStatus.OK);
+		return new ResponseEntity<>(new GenericResponseObject<>(buyerRequestList,"success",false),HttpStatus.OK);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<GenericResponseObject<List<BuyerRequest>>>(new GenericResponseObject<List<BuyerRequest>>(null,e.getMessage(),true),HttpStatus.OK);
+			return new ResponseEntity<>(new GenericResponseObject<>(null,e.getMessage(),true),HttpStatus.OK);
 		}
 	}
 }
