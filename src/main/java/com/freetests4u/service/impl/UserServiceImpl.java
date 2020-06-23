@@ -46,10 +46,7 @@ public class UserServiceImpl implements UserService  {
 	public UserLoginResponse loginUserWithPassword(String email, String password) throws Exception {
 		// TODO Auto-generated method stub
 		 Map<String,Object> headerClaims = new HashMap<>();
-//		 String secret = "whsjqsbjqnkjhsk";
 		 UserLoginResponse loginResponse=null;
-		 
-		 
 		 User user=userDao.getUser(email);
 		 
 		 if(user==null) {
@@ -86,8 +83,6 @@ public class UserServiceImpl implements UserService  {
 		 loginResponse.setId(user.getId());
 		 loginResponse.setName(user.getName());
 		 loginResponse.setToken(token);
-
-
 		 
 		 
 		 System.out.println("token: "+token);
