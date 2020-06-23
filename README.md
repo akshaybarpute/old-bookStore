@@ -2,7 +2,7 @@
 
 This is my hobby project old-BookStore. This project enables users to sell their old books online & also enable them to buy old books
 online at cheaper prices. The jwt token authentication is used in the project. So, If someone wants any reference code for jwt authentication
-implementation in spring-boot java, then it will be good example for them.
+implementation in spring-boot java, then it will be good example for them. This project also will be good reference to people who are learning to create spring-boot, hibernate-jpa REST application.
 
 ## Getting Started
 
