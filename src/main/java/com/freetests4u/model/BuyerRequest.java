@@ -34,11 +34,15 @@ public class BuyerRequest {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userid", referencedColumnName = "id", insertable = false, updatable = false)
-	User user;
+	private User user;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "bookid", referencedColumnName = "id", insertable = false, updatable = false)
-	Book book;
+	private Book book;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="delivery_address",referencedColumnName = "id", insertable = false, updatable = false)
+	private UserAddress deliveryAddress;
 	
 	@Column(name="bookid")
 	private int bookId;
@@ -51,6 +55,9 @@ public class BuyerRequest {
 	
 	@Column(name="is_fullfilled")
 	private boolean isFullfilled;
+	
+	@Column(name="delivery_address")
+	private String deliveryAddressId;
 	
 	@Column(name="created_at")
 	private Timestamp createdAt;
@@ -98,6 +105,14 @@ public class BuyerRequest {
 		this.book = book;
 	}
 
+	public UserAddress getDeliveryAddress() {
+		return deliveryAddress;
+	}
+
+	public void setDeliveryAddress(UserAddress deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
+	}
+
 	public int getBookId() {
 		return bookId;
 	}
@@ -130,6 +145,14 @@ public class BuyerRequest {
 		this.isFullfilled = isFullfilled;
 	}
 
+	public String getDeliveryAddressId() {
+		return deliveryAddressId;
+	}
+
+	public void setDeliveryAddressId(String deliveryAddressId) {
+		this.deliveryAddressId = deliveryAddressId;
+	}
+
 	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
@@ -146,6 +169,5 @@ public class BuyerRequest {
 		this.updatedAt = updatedAt;
 	}
 
-	
 	
 }

@@ -2,9 +2,6 @@ package com.freetests4u.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-
-import com.freetests4u.exceptions.InvalidSellerRequestIdException;
 import com.freetests4u.model.SellerRequest;
 
 public interface SellerRequestDao {

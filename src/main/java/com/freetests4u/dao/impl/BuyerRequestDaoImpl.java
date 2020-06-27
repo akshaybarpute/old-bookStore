@@ -6,7 +6,6 @@ import javax.transaction.Transactional;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +13,7 @@ import com.freetests4u.dao.BuyerRequestDao;
 import com.freetests4u.model.Book;
 import com.freetests4u.model.BuyerRequest;
 import com.freetests4u.model.User;
+import com.freetests4u.model.UserAddress;
 
 @Component
 public class BuyerRequestDaoImpl implements BuyerRequestDao{
@@ -48,15 +48,20 @@ public class BuyerRequestDaoImpl implements BuyerRequestDao{
 		
 		Session session = sessionFactory.openSession();
 		
-		String hql = "from BuyerRequest where id=:Id";
+		String hql = "SELECT br from BuyerRequest br "
+				+ "LEFT JOIN FETCH br.user "
+				+"LEFT JOIN FETCH br.book "
+				+"LEFT JOIN FETCH br.deliveryAddress "
+				+ "where br.id=:Id";
 		BuyerRequest br = (BuyerRequest) session.createQuery(hql)
 				.setParameter("Id", id)
 				.uniqueResult();
 		
-		User user = br.getUser();
-		Book book =  br.getBook();
-		
-		System.out.println("user: "+user.getName()+"book: "+book.getTitle());
+//		User user = br.getUser();
+//		Book book =  br.getBook();
+//		UserAddress add = br.getAddress();
+//		
+//		System.out.println("user: "+user.getName()+"book: "+book.getTitle()+"address: "+add.getId());
 		return br;
 	}
 
@@ -68,7 +73,6 @@ public class BuyerRequestDaoImpl implements BuyerRequestDao{
 		Session session = sessionFactory.openSession();
 		
 		String hql = "from BuyerRequest where bookId=:bookId order by id desc";
-//		String hql = "from BuyerRequest where bookId="+bookId +" order by id desc";
 		
 //		return 
 		List<BuyerRequest> brList=session.createQuery(hql)

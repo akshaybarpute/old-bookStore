@@ -6,15 +6,14 @@ import javax.transaction.Transactional;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.freetests4u.dao.SellerRequestDao;
-import com.freetests4u.exceptions.InvalidSellerRequestIdException;
 import com.freetests4u.model.Book;
 import com.freetests4u.model.SellerRequest;
 import com.freetests4u.model.User;
+import com.freetests4u.model.UserAddress;
 
 @Component
 public class SellerRequestDaoImpl implements SellerRequestDao {
@@ -37,23 +36,25 @@ public class SellerRequestDaoImpl implements SellerRequestDao {
 		Session session = sessionFactory.getCurrentSession();
 
 		
-		String hql = "from SellerRequest where id=:Id AND isActive=true";
+		String hql = " SELECT sr from SellerRequest sr "
+				+ "LEFT JOIN FETCH sr.user "
+				+"LEFT JOIN FETCH sr.book "
+				+"LEFT JOIN FETCH sr.dispatchAddress "
+				+ "where sr.id=:Id AND sr.isActive=true";
 		
 		SellerRequest sr = (SellerRequest) session.createQuery(hql)
 		.setParameter("Id", id)
 		.uniqueResult();
 		
-//		if(sr==null) {
-//			throw new InvalidSellerRequestIdException("Seller Request Id not found in db");
+//		if(sr!=null) {
+//		User user = sr.getUser();
+//		Book book = sr.getBook();
+//		UserAddress add = sr.getDispatchAddress();
+//		
+//		System.out.println("user:"+ user.getId());
+//		System.out.println("book: "+book.getId());
+//		System.out.println("address: "+add.getId());
 //		}
-		
-		if(sr!=null) {
-		User user = sr.getUser();
-		Book book = sr.getBook();
-		
-		System.out.println("user:"+ user.getId());
-		System.out.println("book: "+book.getId());
-		}
 		return sr;
 	}
 

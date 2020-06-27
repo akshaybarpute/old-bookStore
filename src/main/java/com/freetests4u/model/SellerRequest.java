@@ -19,39 +19,46 @@ public class SellerRequest {
 	@Id
 	@Column(name="id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	int id;
+	private int id;
 	
 	@Column(name="userid")
-	String userId;
+	private String userId;
 	
 	@Column(name="bookid")
-	int bookId;
+	private int bookId;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userid", referencedColumnName = "id", insertable = false, updatable = false)
-	User user;
+	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "bookid", referencedColumnName = "id", insertable = false, updatable = false)
-	Book book;
+	private Book book;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="dispatch_address",referencedColumnName = "id", insertable = false, updatable = false )
+	private UserAddress dispatchAddress;
 	
 	@Column(name="seller_price")
-	int sellerPrice;
+	private int sellerPrice;
 	
 	@Column(name="seller_currency")
-	String sellerCurrency;
+	private String sellerCurrency;
 	
 	@Column(name="actual_price")
-	int actualPrice;
+	private int actualPrice;
+	
+	@Column(name="dispatch_address")
+	private int dispatchAddressId;
 	
 	@Column(name="is_active")
-	boolean isActive;
+	private boolean isActive;
 	
 	@Column(name="created_at")
-	Timestamp  createdAt;
+	private Timestamp  createdAt;
 	
 	@Column(name="updated_at")
-	Timestamp updatedAt;
+	private Timestamp updatedAt;
 
 	public int getId() {
 		return id;
@@ -93,6 +100,14 @@ public class SellerRequest {
 		this.book = book;
 	}
 
+	public UserAddress getDispatchAddress() {
+		return dispatchAddress;
+	}
+
+	public void setDispatchAddress(UserAddress dispatchAddress) {
+		this.dispatchAddress = dispatchAddress;
+	}
+
 	public int getSellerPrice() {
 		return sellerPrice;
 	}
@@ -115,6 +130,14 @@ public class SellerRequest {
 
 	public void setActualPrice(int actualPrice) {
 		this.actualPrice = actualPrice;
+	}
+
+	public int getDispatchAddressId() {
+		return dispatchAddressId;
+	}
+
+	public void setDispatchAddressId(int dispatchAddressId) {
+		this.dispatchAddressId = dispatchAddressId;
 	}
 
 	public boolean isActive() {
@@ -140,6 +163,6 @@ public class SellerRequest {
 	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	
+
 	
 }

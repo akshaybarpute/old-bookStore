@@ -40,22 +40,9 @@ public class BookDaoImpl implements BookDao {
 
 		
 		Session session = sessionFactory.getCurrentSession();
-//		Transaction trans = session.beginTransaction();
 		
-//		try {
 			session.save(book);
-//			trans.commit();
 			return true;
-//		}
-//		catch(Exception e) {
-//			e.printStackTrace();
-//			trans.rollback();
-//			return false;
-//		}
-//		finally {
-//		session.close();
-//		}
-		
 	}
 
 	@SuppressWarnings("unchecked")
@@ -78,8 +65,9 @@ public class BookDaoImpl implements BookDao {
 	public Book getBook(int id) {
 		// TODO Auto-generated method stub
 		
+		Session session = sessionFactory.openSession();
 		String hqlQuery = "from Book Where id=:id";
-		return (Book) sessionFactory.openSession().createQuery(hqlQuery).setParameter("id", id).uniqueResult();
+		return (Book) session.createQuery(hqlQuery).setParameter("id", id).uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")

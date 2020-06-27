@@ -4,8 +4,10 @@ import com.freetests4u.model.BuyerRequest;
 
 public class CreateBuyerRequest {
 
-	BuyerRequest buyerRequest;
-	int sellerRequestId;
+	private BuyerRequest buyerRequest;
+	private int sellerRequestId;
+	private int buyerAddressId;
+	
 	public BuyerRequest getBuyerRequest() {
 		return buyerRequest;
 	}
@@ -18,6 +20,13 @@ public class CreateBuyerRequest {
 	public void setSellerRequestId(int sellerRequestId) {
 		this.sellerRequestId = sellerRequestId;
 	}
+	public int getBuyerAddressId() {
+		return buyerAddressId;
+	}
+	public void setBuyerAddressId(int buyerAddressId) {
+		this.buyerAddressId = buyerAddressId;
+	}
+	
 	
 	
 }

@@ -74,7 +74,6 @@ public class AuthFilter implements Filter{
 
 		System.out.println("Request URI is: " + req.getRequestURI());
 		chain.doFilter(request, response);
-		System.out.println("Response Status Code is: " + res.getStatus());
 	}
 
 	@Override
