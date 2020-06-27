@@ -43,9 +43,12 @@ Create Table: CREATE TABLE `buyer_seller_request_mapping` (
   `buyer_request_id` int(11) NOT NULL,
   `seller_request_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` enum('rejected_by_buyer','rejected_by_seller','pending','deliverd') NOT NULL DEFAULT 'pending',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `rejection_code` int(11) DEFAULT NULL,
+  `reason` text,
   PRIMARY KEY (`transid`)
- );
-
+);
 
  //      Table: seller_requests
 Create Table: CREATE TABLE `seller_requests` (
@@ -59,6 +62,7 @@ Create Table: CREATE TABLE `seller_requests` (
   `userid` char(36) NOT NULL,
   `bookid` int(11) NOT NULL,
   `dispatch_address` int(11) NOT NULL,
+  `weight` decimal(2,2) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -88,5 +92,15 @@ Create Table: CREATE TABLE `addresses` (
   `zip` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
  );
+
+Create Table: CREATE TABLE `rejection_reasons` (
+  `id` int(11) NOT NULL,
+  `reason` varchar(150) NOT NULL,
+  `type` enum('buyer','seller') NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+
+
 
 
