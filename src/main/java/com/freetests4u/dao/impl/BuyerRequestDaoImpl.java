@@ -35,10 +35,10 @@ public class BuyerRequestDaoImpl implements BuyerRequestDao{
 	public List<BuyerRequest> getBuyerRequest(int id) {
 		// TODO Auto-generated method stub
 		
-		String hql = "from BuyerRequest where id=1";
+		String hql = "from BuyerRequest where id=:id";
 		Session session = sessionFactory.openSession();
 		return (List<BuyerRequest>)session.createQuery(hql)
-//		.setParameter("id",id)
+		.setParameter("id",id)
 		.list();
 	}
 
@@ -57,11 +57,6 @@ public class BuyerRequestDaoImpl implements BuyerRequestDao{
 				.setParameter("Id", id)
 				.uniqueResult();
 		
-//		User user = br.getUser();
-//		Book book =  br.getBook();
-//		UserAddress add = br.getAddress();
-//		
-//		System.out.println("user: "+user.getName()+"book: "+book.getTitle()+"address: "+add.getId());
 		return br;
 	}
 
@@ -74,7 +69,6 @@ public class BuyerRequestDaoImpl implements BuyerRequestDao{
 		
 		String hql = "from BuyerRequest where bookId=:bookId order by id desc";
 		
-//		return 
 		List<BuyerRequest> brList=session.createQuery(hql)
 		.setParameter("bookId", bookId)
 		.setFirstResult(offset)

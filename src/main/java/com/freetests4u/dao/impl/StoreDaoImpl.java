@@ -72,7 +72,6 @@ public class StoreDaoImpl implements StoreDao{
 		// TODO Auto-generated method stub
 
 		Session session = sessionFactory.getCurrentSession();
-//		Transaction tr = session.beginTransaction();
 		
 	      TransactionStatus status=null;
 	      try {
@@ -83,21 +82,12 @@ public class StoreDaoImpl implements StoreDao{
 	      System.out.println("from createStoreEntry: "+status!=null? "active transaction": "no transaction");
 
 		
-//		try {
 			Store store = new Store();
 			store.setBookId(bookId);
 			store.setBookCount(0);
 			store.setDeleted(false);
 			session.save(store);
-//			tr.commit();
-//		}
-//		catch(Exception e) {
-//			e.printStackTrace();
-//			throw e;
-//		}
-//		finally {
-//			session.close();
-//		}
+			
 	}
 	
 }

@@ -51,6 +51,9 @@ public class SellerRequest {
 	@Column(name="dispatch_address")
 	private int dispatchAddressId;
 	
+	@Column(name="weight")
+	private float weight;
+	
 	@Column(name="is_active")
 	private boolean isActive;
 	
@@ -140,6 +143,14 @@ public class SellerRequest {
 		this.dispatchAddressId = dispatchAddressId;
 	}
 
+	public float getWeight() {
+		return weight;
+	}
+
+	public void setWeight(float weight) {
+		this.weight = weight;
+	}
+
 	public boolean isActive() {
 		return isActive;
 	}
@@ -163,6 +174,7 @@ public class SellerRequest {
 	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+
 
 	
 }
