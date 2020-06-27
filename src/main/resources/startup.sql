@@ -33,6 +33,7 @@ Create Table: CREATE TABLE `buyer_requests` (
   `is_fullfilled` tinyint(1) DEFAULT '0',
   `userid` char(36) NOT NULL,
   `bid_currency` varchar(255) DEFAULT NULL,
+  `delivery_address` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -57,6 +58,7 @@ Create Table: CREATE TABLE `seller_requests` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `userid` char(36) NOT NULL,
   `bookid` int(11) NOT NULL,
+  `dispatch_address` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -78,9 +80,13 @@ Create Table: CREATE TABLE `addresses` (
   `country` varchar(50) NOT NULL,
   `city` varchar(50) NOT NULL,
   `address_line_1` varchar(100) NOT NULL,
-  `address_line_2` varchar(100) NOT NULL,
+  `address_line_2` varchar(100) DEFAULT NULL,
   `userid` char(36) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `isdefault` tinyint(1) DEFAULT '1',
+  `zip` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
-)
+ );
 
 
