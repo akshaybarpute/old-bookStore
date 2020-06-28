@@ -1,5 +1,7 @@
 package com.freetests4u.dao.impl;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.hibernate.Session;
@@ -8,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.freetests4u.dao.BuyerSellerMappingDao;
+import com.freetests4u.dto.TransactionType;
 import com.freetests4u.model.BuyerSellerMapping;
+import com.freetests4u.service.impl.BuyerSellerMappingServiceImpl;
 
 @Component
 public class BuyerSellerMappingDaoImpl implements BuyerSellerMappingDao{
@@ -16,7 +20,6 @@ public class BuyerSellerMappingDaoImpl implements BuyerSellerMappingDao{
 	@Autowired
 	SessionFactory sessionFactory;
 	
-//	@Transactional
 	@Override
 	public BuyerSellerMapping getBuyerSellerMappingById(int id) {
 		// TODO Auto-generated method stub
@@ -68,4 +71,72 @@ public class BuyerSellerMappingDaoImpl implements BuyerSellerMappingDao{
 		session.save(mapping);
 	}
 
-}
+
+	@Override
+	public List<BuyerSellerMapping> getActiveBuyerSellerMappingForBuyerId(String userId, TransactionType type) {
+		// TODO Auto-generated method stub
+		
+		String status=null;
+		
+		if(type==TransactionType.PENDING) {
+			status="pending";
+		}
+		else if(type==TransactionType.REJECTED_BY_BUYER) {
+			status="rejected_by_buyer";
+		}
+		else if(type==TransactionType.REJECTED_BY_SELLER) {
+			status="rejected_by_seller";
+		}
+		else if(type==TransactionType.DELIVERD) {
+			status="deliverd";
+		}
+		
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "SELECT b FROM BuyerSellerMapping b "
+				+ "LEFT JOIN FETCH b.buyerRequest br "
+				+ "LEFT JOIN FETCH br.book "
+				+ "WHERE b.buyerRequest.user.id=:Id AND b.status=:status";
+		
+		@SuppressWarnings("unchecked")
+		List<BuyerSellerMapping> l = session.createQuery(hql)
+				.setParameter("Id", userId)
+				.setParameter("status", status)
+				.list();
+		return l;
+	}
+
+
+	@Override
+	public List<BuyerSellerMapping> getActiveBuyerSellerMappingForSellerId(String userId, TransactionType type) {
+		// TODO Auto-generated method stub
+		
+		String status=null;
+		
+		if(type==TransactionType.PENDING) {
+			status="pending";
+		}
+		else if(type==TransactionType.REJECTED_BY_BUYER) {
+			status="rejected_by_buyer";
+		}
+		else if(type==TransactionType.REJECTED_BY_SELLER) {
+			status="rejected_by_seller";
+		}
+		else if(type==TransactionType.DELIVERD) {
+			status="deliverd";
+		}
+		
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "SELECT b FROM BuyerSellerMapping b "
+				+ "LEFT JOIN FETCH b.buyerRequest br "
+				+ "LEFT JOIN FETCH br.book "
+				+ "WHERE b.sellerRequest.user.id=:Id AND b.status=:status";
+		
+		@SuppressWarnings("unchecked")
+		List<BuyerSellerMapping> l = session.createQuery(hql)
+				.setParameter("Id", userId)
+				.setParameter("status", status)
+				.list();
+		return l;
+	}
+
+	}

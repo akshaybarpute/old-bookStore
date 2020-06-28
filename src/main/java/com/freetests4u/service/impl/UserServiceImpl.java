@@ -17,6 +17,7 @@ import com.freetests4u.dao.UserDao;
 import com.freetests4u.dto.LoginType;
 import com.freetests4u.dto.UserLoginResponse;
 import com.freetests4u.exceptions.UserNotFoundException;
+import com.freetests4u.model.BuyerSellerMapping;
 import com.freetests4u.model.User;
 import com.freetests4u.security.SecurityConstants;
 import com.freetests4u.service.UserService;
@@ -27,6 +28,7 @@ public class UserServiceImpl implements UserService  {
 
 	@Autowired
 	UserDao userDao;
+	
 
 	@Transactional
 	@Override
