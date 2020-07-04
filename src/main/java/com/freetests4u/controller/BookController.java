@@ -70,16 +70,19 @@ public class BookController {
 	
 	
 	@RequestMapping(value="/getBooks", method=RequestMethod.GET)
-	public ResponseEntity<GenericResponseObject<List<Book>>> getList(@RequestParam int limit, @RequestParam int offset){
+	public ResponseEntity<GenericResponseObject<List<Book>>> getList(@RequestParam int size, @RequestParam int page){
 		
 		try {
-			List<Book> l = bookService.getBooks(limit, offset);
-		return new ResponseEntity<>(new GenericResponseObject<>(l,"success",false),HttpStatus.OK);
+			if(page-1<0) {
+				throw new Exception("Page index can't be -ve");
+			}
+			GenericResponseObject<List<Book>> obj = bookService.getBooks(size, page-1);
+		return new ResponseEntity<>(obj,HttpStatus.OK);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 			
-			return new ResponseEntity<>(new GenericResponseObject<>(null,"success",false),HttpStatus.OK);
+			return new ResponseEntity<>(new GenericResponseObject<>(null,e.getMessage(),true),HttpStatus.OK);
 		}
 	}
 	

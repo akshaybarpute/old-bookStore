@@ -1,20 +1,16 @@
 package com.freetests4u.service.impl;
 
 import java.util.List;
-
 import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.freetests4u.dao.BookDao;
 import com.freetests4u.dao.SellerRequestDao;
-import com.freetests4u.dao.StoreDao;
-import com.freetests4u.dto.StoreAction;
 import com.freetests4u.exceptions.BookNotFoundException;
 import com.freetests4u.exceptions.MalformedRequestExeption;
 import com.freetests4u.model.Book;
 import com.freetests4u.model.SellerRequest;
+import com.freetests4u.repositories.BookRepository;
+import com.freetests4u.repositories.StoreRepository;
 import com.freetests4u.service.SellerRequestService;
 
 @Transactional
@@ -24,11 +20,15 @@ public class SellerRequestServiceImpl implements SellerRequestService {
 	@Autowired
 	private SellerRequestDao sellerRequestDao;
 	
-	@Autowired
-	private StoreDao storeDao;
+//	@Autowired
+//	private StoreDao storeDao;
 	
 	@Autowired
-	private BookDao bookDao;
+	private StoreRepository storeRepository;
+
+	
+	@Autowired
+	private BookRepository bookRepository;
 	
 	@Override
 	public void createSellerRequestService(SellerRequest sr) throws Exception {
@@ -36,14 +36,15 @@ public class SellerRequestServiceImpl implements SellerRequestService {
 		sellerRequestDao.registerRequest(sr);
 		
 		try {
-		Book book =  bookDao.getBook(sr.getBookId());
+			
+		Book book =  bookRepository.findOne(sr.getBookId());
 		
 		if(book==null||book.getId()==0) {
 			throw new BookNotFoundException("No Such Book exists");
 		}
 		sr.setActive(true);
 		sellerRequestDao.registerRequest(sr);
-		storeDao.updateStore(sr.getBookId(),StoreAction.INCREMENT);
+		storeRepository.incrementStoreBookCount(sr.getBookId());
 		}
 		catch(Exception e) {
 			e.printStackTrace();

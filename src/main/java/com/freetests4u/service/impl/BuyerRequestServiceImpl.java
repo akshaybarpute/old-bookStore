@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import com.freetests4u.dao.BuyerRequestDao;
 import com.freetests4u.dao.BuyerSellerMappingDao;
 import com.freetests4u.dao.SellerRequestDao;
-import com.freetests4u.dao.StoreDao;
-import com.freetests4u.dto.StoreAction;
 import com.freetests4u.exceptions.BookNotAvailableException;
 import com.freetests4u.exceptions.InvalidSellerRequestIdException;
 import com.freetests4u.exceptions.MalformedRequestExeption;
@@ -19,6 +17,7 @@ import com.freetests4u.model.BuyerRequest;
 import com.freetests4u.model.BuyerSellerMapping;
 import com.freetests4u.model.SellerRequest;
 import com.freetests4u.model.Store;
+import com.freetests4u.repositories.StoreRepository;
 import com.freetests4u.service.BuyerRequestService;
 
 //if book not available buyer will be notified when the book will available
@@ -32,8 +31,12 @@ public class BuyerRequestServiceImpl implements BuyerRequestService{
 	@Autowired
 	private BuyerSellerMappingDao buyerSellerMappingDao;
 	
+//	@Autowired
+//	private StoreDao storeDao;
+	
 	@Autowired
-	private StoreDao storeDao;
+	private StoreRepository storeRepository;
+
 	
 	@Autowired
 	private SellerRequestDao sellerRequestDao;
@@ -55,7 +58,8 @@ public class BuyerRequestServiceImpl implements BuyerRequestService{
 			if(sr.getBookId()!=br.getBookId()) {
 				throw new InvalidSellerRequestIdException("SellerRequest BuyerRequest bookId mismatch");
 			}
-			Store store = storeDao.getBookCountByBookId(br.getBookId());
+			
+			Store store = storeRepository.findByBookId(br.getBookId());
 
 			if(store.getBookCount()<=0) {
 				throw new BookNotAvailableException("Book count is 0 in store");
@@ -67,7 +71,7 @@ public class BuyerRequestServiceImpl implements BuyerRequestService{
 			mapping.setBuyerRequestId(br.getId());
 			mapping.setSellerRequestId(sellerRequestId);
 			buyerSellerMappingDao.createBuyerSellerMapping(mapping);
-			storeDao.updateStore(br.getBookId(), StoreAction.DECREMENT);
+			storeRepository.decrementStoreBookCount(br.getBookId());
 			sellerRequestDao.markRequestInActive(sellerRequestId);
 		}
 	}

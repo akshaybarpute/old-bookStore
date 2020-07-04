@@ -8,11 +8,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import com.freetests4u.dao.BuyerSellerMappingDao;
 import com.freetests4u.dto.TransactionType;
 import com.freetests4u.model.BuyerSellerMapping;
-import com.freetests4u.service.impl.BuyerSellerMappingServiceImpl;
 
 @Component
 public class BuyerSellerMappingDaoImpl implements BuyerSellerMappingDao{
@@ -73,7 +71,7 @@ public class BuyerSellerMappingDaoImpl implements BuyerSellerMappingDao{
 
 
 	@Override
-	public List<BuyerSellerMapping> getActiveBuyerSellerMappingForBuyerId(String userId, TransactionType type) {
+	public List<BuyerSellerMapping> getTransactionsForBuyerId(String userId, TransactionType type,int limit,int offset) {
 		// TODO Auto-generated method stub
 		
 		String status=null;
@@ -107,7 +105,7 @@ public class BuyerSellerMappingDaoImpl implements BuyerSellerMappingDao{
 
 
 	@Override
-	public List<BuyerSellerMapping> getActiveBuyerSellerMappingForSellerId(String userId, TransactionType type) {
+	public List<BuyerSellerMapping> getTransactionsForSellerId(String userId, TransactionType type, int limit, int offset) {
 		// TODO Auto-generated method stub
 		
 		String status=null;

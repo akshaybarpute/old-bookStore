@@ -42,8 +42,8 @@ public class BuyerSellerMappingServiceImpl implements BuyerSellerMappingService{
 	public TransactionListForUser getPendingTransListForUser(String userId) {
 		// TODO Auto-generated method stub
 		
-		List<BuyerSellerMapping> l1= mappingDao.getActiveBuyerSellerMappingForBuyerId(userId, TransactionType.PENDING);
-		List<BuyerSellerMapping> l2 = mappingDao.getActiveBuyerSellerMappingForSellerId(userId, TransactionType.PENDING);
+		List<BuyerSellerMapping> l1= mappingDao.getTransactionsForBuyerId(userId, TransactionType.PENDING,10,0);
+		List<BuyerSellerMapping> l2 = mappingDao.getTransactionsForSellerId(userId, TransactionType.PENDING,10,0);
 		
 		TransactionListForUser l= new TransactionListForUser();
 		
@@ -51,5 +51,22 @@ public class BuyerSellerMappingServiceImpl implements BuyerSellerMappingService{
 		l.setPendingSellTransactions(l2);
 		return l;
 	}
+
+	@Override
+	public TransactionListForUser getCompletedTransListForUser(String userId) {
+		// TODO Auto-generated method stub
+		
+		List<BuyerSellerMapping> l1= mappingDao.getTransactionsForBuyerId(userId, TransactionType.DELIVERD,10,0);
+		List<BuyerSellerMapping> l2 = mappingDao.getTransactionsForSellerId(userId, TransactionType.DELIVERD,10,0);
+
+		TransactionListForUser l= new TransactionListForUser();
+		l.setPendingBuyingTransactions(l1);
+		l.setPendingSellTransactions(l2);
+		return l;
+	}
+	
+	
+	
+	
 
 }

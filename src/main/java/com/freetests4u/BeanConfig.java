@@ -31,14 +31,14 @@ public class BeanConfig {
 	}
 	
 	
-    @Bean
+    @Bean(name="transactionManager")
     public PlatformTransactionManager hibernateTransactionManager() {
         HibernateTransactionManager transactionManager
           = new HibernateTransactionManager();
         transactionManager.setSessionFactory(getSessionFactory());
         return transactionManager;
     }
-	
+    	
 //	@Bean
 //	public DataSource dataSource() {
 //	    return new MysqlDataSource(); // (1)

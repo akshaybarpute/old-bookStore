@@ -9,4 +9,5 @@ public interface BuyerSellerMappingService {
 	BuyerSellerMapping getBuyerSellerMappingByBuyerRequestId(int id);
 	BuyerSellerMapping getBuyerSellerMappingBySellerRequestId(int id);
 	TransactionListForUser getPendingTransListForUser(String userId);
+	TransactionListForUser getCompletedTransListForUser(String userId);
 }

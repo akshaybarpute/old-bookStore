@@ -11,6 +11,6 @@ public interface BuyerSellerMappingDao {
 	BuyerSellerMapping getBuyerSellerMappingByBuyerRequestId(int id);
 	BuyerSellerMapping getBuyerSellerMappingBySellerRequestId(int id);
 	void createBuyerSellerMapping(BuyerSellerMapping mapping);
-	List<BuyerSellerMapping> getActiveBuyerSellerMappingForBuyerId(String userId, TransactionType type);
-	List<BuyerSellerMapping> getActiveBuyerSellerMappingForSellerId(String userId,TransactionType type);
+	List<BuyerSellerMapping> getTransactionsForBuyerId(String userId, TransactionType type, int limit, int offset);
+	List<BuyerSellerMapping> getTransactionsForSellerId(String userId,TransactionType type, int limit, int offset);
 }
