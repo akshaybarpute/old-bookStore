@@ -4,21 +4,23 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.freetests4u.dao.UserDao;
+//import com.freetests4u.dao.UserDao;
 import com.freetests4u.dto.LoginType;
 import com.freetests4u.dto.UserLoginResponse;
 import com.freetests4u.exceptions.UserNotFoundException;
-import com.freetests4u.model.BuyerSellerMapping;
 import com.freetests4u.model.User;
+import com.freetests4u.repositories.UsersRepository;
 import com.freetests4u.security.SecurityConstants;
 import com.freetests4u.service.UserService;
 
@@ -26,9 +28,11 @@ import com.freetests4u.service.UserService;
 @Service
 public class UserServiceImpl implements UserService  {
 
-	@Autowired
-	UserDao userDao;
+//	@Autowired
+//	UserDao userDao;
 	
+	@Autowired
+	UsersRepository usersRepository;
 
 	@Transactional
 	@Override
@@ -40,7 +44,8 @@ public class UserServiceImpl implements UserService  {
 			String hashed = BCrypt.hashpw(pwd, BCrypt.gensalt(10));
 			user.setSocialId(hashed);
 		}
-		 userDao.createUser(user);
+		usersRepository.save(user);
+//		 userDao.createUser(user);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -49,7 +54,10 @@ public class UserServiceImpl implements UserService  {
 		// TODO Auto-generated method stub
 		 Map<String,Object> headerClaims = new HashMap<>();
 		 UserLoginResponse loginResponse=null;
-		 User user=userDao.getUser(email);
+		 
+//		 User user=userDao.getUser(email);
+		 User user=usersRepository.getUserByEmail(email);
+
 		 
 		 if(user==null) {
 			 throw new UserNotFoundException("UnAuthorised: email or password Incorrect");
@@ -94,7 +102,10 @@ public class UserServiceImpl implements UserService  {
 	@Override
 	public List<User> searchUser(User user) {
 		// TODO Auto-generated method stub
-		return userDao.getUsers(user);
+		
+		ExampleMatcher matcher = ExampleMatcher.matchingAll();
+		Page<User> p=  usersRepository.findAll(Example.of(user, matcher), new PageRequest(0,10,new Sort(Sort.Direction.DESC,"id")));
+		return p.getContent();
 	}
 	
 	

@@ -53,18 +53,24 @@ public class BuyerRequestController {
 	
 	
 	@RequestMapping(value="/getBuyerRequestsForBook",method=RequestMethod.GET)
-	ResponseEntity<GenericResponseObject<List<BuyerRequest>>> getBuyerRequestsForBook(@RequestParam Integer offset,Integer bookId, String bookName, Integer limit){
+	ResponseEntity<GenericResponseObject<List<BuyerRequest>>> getBuyerRequestsForBook(@RequestParam Integer page,Integer bookId, String bookName, Integer size){
 		
 		try {
-//			System.out.println("bookId: "+bookId+ "bookName "+bookName);
+			System.out.println("bookId: "+bookId+ "bookName "+bookName+ " "+size+" "+page);
 			
 			int bookIdVal = bookId!=null ?bookId.intValue():0;
-			int offsetVal = offset==null ?  offset.intValue():0;
-			int limitVal = limit==null ? limit.intValue():0;
+			int pageVal = page!=null ?  page.intValue():1;
+			int sizeVal = size!=null ? size.intValue():10;
 			
-		List<BuyerRequest> buyerRequestList = buyerRequestService.getBuyerRequestsForBook(bookIdVal, bookName, offsetVal, limitVal);
+			if(pageVal-1<0) {
+				throw new Exception("Page value can't be less than 0");
+			}
+			
+			System.out.println("size: "+sizeVal+" page: "+pageVal);
+			
+			GenericResponseObject<List<BuyerRequest>> obj  = buyerRequestService.getBuyerRequestsForBook(bookIdVal, bookName, sizeVal, pageVal-1);
 		
-		return new ResponseEntity<>(new GenericResponseObject<>(buyerRequestList,"success",false),HttpStatus.OK);
+		return new ResponseEntity<>(obj,HttpStatus.OK);
 		}
 		catch(Exception e) {
 			e.printStackTrace();

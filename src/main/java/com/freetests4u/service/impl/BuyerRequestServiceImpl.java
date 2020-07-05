@@ -1,15 +1,21 @@
 package com.freetests4u.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import com.freetests4u.dao.BuyerRequestDao;
 import com.freetests4u.dao.BuyerSellerMappingDao;
 import com.freetests4u.dao.SellerRequestDao;
+import com.freetests4u.dto.GenericResponseObject;
 import com.freetests4u.exceptions.BookNotAvailableException;
 import com.freetests4u.exceptions.InvalidSellerRequestIdException;
 import com.freetests4u.exceptions.MalformedRequestExeption;
@@ -17,6 +23,7 @@ import com.freetests4u.model.BuyerRequest;
 import com.freetests4u.model.BuyerSellerMapping;
 import com.freetests4u.model.SellerRequest;
 import com.freetests4u.model.Store;
+import com.freetests4u.repositories.BuyerRequestRepository;
 import com.freetests4u.repositories.StoreRepository;
 import com.freetests4u.service.BuyerRequestService;
 
@@ -25,8 +32,11 @@ import com.freetests4u.service.BuyerRequestService;
 @Service
 public class BuyerRequestServiceImpl implements BuyerRequestService{
 
+//	@Autowired
+//	private BuyerRequestDao buyerRequestDao;
+	
 	@Autowired
-	private BuyerRequestDao buyerRequestDao;
+	private BuyerRequestRepository buyerRequestRepository;
 	
 	@Autowired
 	private BuyerSellerMappingDao buyerSellerMappingDao;
@@ -46,7 +56,8 @@ public class BuyerRequestServiceImpl implements BuyerRequestService{
 	public void registerBuyerRequest(BuyerRequest br, int sellerRequestId) throws InvalidSellerRequestIdException, BookNotAvailableException {
 		// TODO Auto-generated method stub
 		if(sellerRequestId==0) {
-		buyerRequestDao.createBuyerRequest(br);
+//		buyerRequestDao.createBuyerRequest(br);
+		buyerRequestRepository.save(br);
 		// will add functionality to notify buyers when the book will be available in store & with the provided price
 		}
 		else {
@@ -66,7 +77,8 @@ public class BuyerRequestServiceImpl implements BuyerRequestService{
 			}
 			
 			br.setFullfilled(true);
-			buyerRequestDao.createBuyerRequest(br);
+			buyerRequestRepository.save(br);
+//			buyerRequestDao.createBuyerRequest(br);
 			BuyerSellerMapping mapping = new BuyerSellerMapping();
 			mapping.setBuyerRequestId(br.getId());
 			mapping.setSellerRequestId(sellerRequestId);
@@ -79,30 +91,44 @@ public class BuyerRequestServiceImpl implements BuyerRequestService{
 	@Override
 	public List<BuyerRequest> getBuyerRequest(int id) {
 		// TODO Auto-generated method stub
-		
-		return buyerRequestDao.getBuyerRequest(id);
+		List<BuyerRequest> l = new ArrayList<>();
+		BuyerRequest br =  buyerRequestRepository.findOne(id);
+		l.add(br);
+		return l;
 	}
 	
+	
 	public BuyerRequest getBuyerRequestById(int id) {
-		
-		return buyerRequestDao.getBuyerRequestDetailsById(id);
+		Optional<BuyerRequest> op = buyerRequestRepository.getBuyerRequestDetailsById(id);
+		return op.isPresent() ? op.get(): null;
 	}
 
 	
 	@Override
-	public List<BuyerRequest> getBuyerRequestsForBook(int bookId, String bookName, int limit, int offset) throws MalformedRequestExeption {
+	public GenericResponseObject<List<BuyerRequest>> getBuyerRequestsForBook(int bookId, String bookName, int size, int page) throws MalformedRequestExeption {
 		// TODO Auto-generated method stub
+		
+		System.out.println("Size "+size+" page "+page);
 		
 		if(bookId==0 && bookName==null) {
 			throw new MalformedRequestExeption("Either book id or book name required");
 		}
 		
 		if(bookId!=0) {
+			BuyerRequest br = new BuyerRequest();
+			br.setBookId(bookId);
+			ExampleMatcher matcher = ExampleMatcher.matching()
+					.withMatcher("bookId", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+					.withIgnorePaths("id", "isActive","isFullfilled","bidPrice");
 			
-			return buyerRequestDao.getBuyerRequestListByBookId(bookId, limit, offset);
+			Page<BuyerRequest> p = buyerRequestRepository.findAll(Example.of(br,matcher), new PageRequest(page,size, new Sort(Sort.Direction.DESC,"id")));
+			GenericResponseObject<List<BuyerRequest>> obj = new GenericResponseObject<>(p.getContent(),"success",false, p.getNumberOfElements(),p.getTotalPages(),page+1);
+			return obj;
 		}
 		else {
-			return buyerRequestDao.getBuyerRequestListByBookId(bookName, limit, offset);
+			Page<BuyerRequest> p = buyerRequestRepository.getBuyerRequestListByBookName(bookName, new PageRequest(page,size, new Sort(Sort.Direction.DESC,"id")));
+			GenericResponseObject<List<BuyerRequest>> obj = new GenericResponseObject<>(p.getContent(),"success",false, p.getNumberOfElements(),p.getTotalPages(),page+1);
+			return obj;
 		}
 	}
 
