@@ -13,8 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import com.freetests4u.dao.BuyerSellerMappingDao;
-import com.freetests4u.dao.SellerRequestDao;
 import com.freetests4u.dto.GenericResponseObject;
 import com.freetests4u.exceptions.BookNotAvailableException;
 import com.freetests4u.exceptions.InvalidSellerRequestIdException;
@@ -24,6 +22,8 @@ import com.freetests4u.model.BuyerSellerMapping;
 import com.freetests4u.model.SellerRequest;
 import com.freetests4u.model.Store;
 import com.freetests4u.repositories.BuyerRequestRepository;
+import com.freetests4u.repositories.BuyerSellerMappingRepository;
+import com.freetests4u.repositories.SellerRequestRepository;
 import com.freetests4u.repositories.StoreRepository;
 import com.freetests4u.service.BuyerRequestService;
 
@@ -39,7 +39,13 @@ public class BuyerRequestServiceImpl implements BuyerRequestService{
 	private BuyerRequestRepository buyerRequestRepository;
 	
 	@Autowired
-	private BuyerSellerMappingDao buyerSellerMappingDao;
+	private BuyerSellerMappingRepository mappingRepository;
+	
+	@Autowired
+	private SellerRequestRepository sellerRequestRepo;
+	
+//	@Autowired
+//	private BuyerSellerMappingDao buyerSellerMappingDao;
 	
 //	@Autowired
 //	private StoreDao storeDao;
@@ -48,8 +54,8 @@ public class BuyerRequestServiceImpl implements BuyerRequestService{
 	private StoreRepository storeRepository;
 
 	
-	@Autowired
-	private SellerRequestDao sellerRequestDao;
+//	@Autowired
+//	private SellerRequestDao sellerRequestDao;
 	
 	@Transactional
 	@Override
@@ -62,7 +68,8 @@ public class BuyerRequestServiceImpl implements BuyerRequestService{
 		}
 		else {
 			
-			SellerRequest sr = sellerRequestDao.getSellerRequestById(sellerRequestId);
+			SellerRequest sr = sellerRequestRepo.findOne(sellerRequestId);
+//			SellerRequest sr = sellerRequestDao.getSellerRequestById(sellerRequestId);
 			if(sr==null) {
 				throw new InvalidSellerRequestIdException("Seller Request Id not found");
 			}
@@ -82,9 +89,11 @@ public class BuyerRequestServiceImpl implements BuyerRequestService{
 			BuyerSellerMapping mapping = new BuyerSellerMapping();
 			mapping.setBuyerRequestId(br.getId());
 			mapping.setSellerRequestId(sellerRequestId);
-			buyerSellerMappingDao.createBuyerSellerMapping(mapping);
+			mappingRepository.save(mapping);
+//			buyerSellerMappingDao.createBuyerSellerMapping(mapping);
 			storeRepository.decrementStoreBookCount(br.getBookId());
-			sellerRequestDao.markRequestInActive(sellerRequestId);
+			sellerRequestRepo.markRequestInActive(sellerRequestId);
+//			sellerRequestDao.markRequestInActive(sellerRequestId);
 		}
 	}
 

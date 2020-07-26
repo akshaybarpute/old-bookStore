@@ -59,6 +59,7 @@ public class SellerRequestController {
 	ResponseEntity<GenericResponseObject<List<SellerRequest>>> getSellerRequestsForBook(int limit,int offset,Integer id, String name, @RequestAttribute(value="userInfo") User u){
 		
 		try {
+			System.out.println("getSellerRequestsForBook");
 			int lId = id==null ? 0 :id.intValue();
 			List<SellerRequest> sl= sellerRequestService.getSellerRequestListByBook(limit, offset, lId, name);
 			return new ResponseEntity<>(new GenericResponseObject<>(sl,"success",false),HttpStatus.OK);
