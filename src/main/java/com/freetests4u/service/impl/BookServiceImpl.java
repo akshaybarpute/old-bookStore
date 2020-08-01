@@ -3,12 +3,13 @@ package com.freetests4u.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.freetests4u.dao.BookDao;
 import com.freetests4u.dto.BookSearchRequest;
 import com.freetests4u.dto.GenericResponseObject;
 import com.freetests4u.exceptions.DuplicateBookEntryException;
@@ -21,10 +22,7 @@ import com.freetests4u.service.BookService;
 @Transactional
 @Service
 public class BookServiceImpl implements BookService{
-	
-	@Autowired
-	BookDao bookDao;
-	
+		
 	@Autowired
 	BookRepository bookRepository;
 	
@@ -80,7 +78,22 @@ public class BookServiceImpl implements BookService{
 	@Override
 	public List<Book> getBooks(BookSearchRequest br) {
 		// TODO Auto-generated method stub
-		return bookDao.getBooks(br.getWriter(), br.getLanguage(), br.getCategory(), br.getLimit(), br.getOffset());
+		ExampleMatcher matcher = ExampleMatcher.matchingAll()
+				.withMatcher("writer", ExampleMatcher.GenericPropertyMatchers.ignoreCase())
+				.withMatcher("language", ExampleMatcher.GenericPropertyMatchers.ignoreCase())
+				.withMatcher("category", ExampleMatcher.GenericPropertyMatchers.ignoreCase())
+				.withIgnorePaths("id");
+		
+		Book b = new Book();
+		
+		b.setWriter(br.getWriter());
+		b.setLanguage(br.getLanguage());
+		b.setCategory(br.getCategory());
+		
+		Page<Book> p =  bookRepository.findAll(Example.of(b, matcher), new PageRequest(br.getOffset(),br.getLimit(), new Sort(Sort.Direction.DESC,"id")));
+		
+		return p.getContent();
+//		return bookDao.getBooks(br.getWriter(), br.getLanguage(), br.getCategory(), br.getLimit(), br.getOffset());
 	}
 
 }
