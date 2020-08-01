@@ -31,4 +31,10 @@ public class StoreController {
 			return new ResponseEntity<>(new GenericResponseObject<>(null,"failed",true),HttpStatus.OK); 
 		}
 	}
+	
+	// get some books to show on home page
+	ResponseEntity<GenericResponseObject<Store>> getSomeBooksForAllCategory(int offset, int size){
+		
+		return null;
+	}
 }

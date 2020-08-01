@@ -1,6 +1,9 @@
 package com.freetests4u.security;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -33,6 +36,20 @@ public class AuthFilter implements Filter{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public boolean shouldFilter(String url) {
+		
+		boolean filter=false;
+		
+		for (String ele: SecurityConstants.AUTH_ROUTE_LIST) {
+			
+			if(url.contains(ele)) {
+				filter=true;
+				return filter;
+			}
+		}
+		return filter;
+	}
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -42,7 +59,14 @@ public class AuthFilter implements Filter{
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		
-		if(req.getRequestURI().contains("login")) {
+		String url = req.getRequestURI();
+		System.out.println("url: "+url);
+		
+		boolean filter = this.shouldFilter(url);
+		
+		System.out.println("####filter: "+ filter);
+		
+		if(filter==false) {
 			chain.doFilter(request, response);
 			return;
 		}
