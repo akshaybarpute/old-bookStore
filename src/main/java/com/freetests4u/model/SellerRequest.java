@@ -40,13 +40,13 @@ public class SellerRequest {
 	private UserAddress dispatchAddress;
 	
 	@Column(name="seller_price")
-	private int sellerPrice;
+	private float sellerPrice;
 	
 	@Column(name="seller_currency")
 	private String sellerCurrency;
 	
 	@Column(name="actual_price")
-	private int actualPrice;
+	private float actualPrice;
 	
 	@Column(name="dispatch_address")
 	private int dispatchAddressId;
@@ -62,6 +62,9 @@ public class SellerRequest {
 	
 	@Column(name="updated_at")
 	private Timestamp updatedAt;
+	
+	@Column(name="deleted")
+	private boolean isDeleted;
 
 	public int getId() {
 		return id;
@@ -111,11 +114,11 @@ public class SellerRequest {
 		this.dispatchAddress = dispatchAddress;
 	}
 
-	public int getSellerPrice() {
+	public float getSellerPrice() {
 		return sellerPrice;
 	}
 
-	public void setSellerPrice(int sellerPrice) {
+	public void setSellerPrice(float sellerPrice) {
 		this.sellerPrice = sellerPrice;
 	}
 
@@ -127,11 +130,11 @@ public class SellerRequest {
 		this.sellerCurrency = sellerCurrency;
 	}
 
-	public int getActualPrice() {
+	public float getActualPrice() {
 		return actualPrice;
 	}
 
-	public void setActualPrice(int actualPrice) {
+	public void setActualPrice(float actualPrice) {
 		this.actualPrice = actualPrice;
 	}
 
@@ -175,6 +178,12 @@ public class SellerRequest {
 		this.updatedAt = updatedAt;
 	}
 
+	public boolean isDeleted() {
+		return isDeleted;
+	}
 
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 	
 }

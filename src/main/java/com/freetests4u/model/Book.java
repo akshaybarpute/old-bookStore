@@ -1,5 +1,7 @@
 package com.freetests4u.model;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,6 +29,18 @@ public class Book {
 	
 	@Column(name="category")
 	private String category;
+	
+	@Column(name="price")
+	private float price;
+	
+	@Column(name="created_at")
+	private Timestamp createdAt;
+	
+	@Column(name="updated_at")
+	private Timestamp updatedAt;
+	
+	@Column(name="deleted")
+	private boolean isDeleted;
 
 	public int getId() {
 		return id;
@@ -67,7 +81,38 @@ public class Book {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	
-	
+
+	public float getPrice() {
+		return price;
+	}
+
+	public void setPrice(float price) {
+		this.price = price;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Timestamp getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Timestamp updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 
 }

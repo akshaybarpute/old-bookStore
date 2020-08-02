@@ -42,6 +42,9 @@ public class User {
 	@NotEmpty(message="loginType required")
 	@Column(name="logintype")
 	private String loginType;
+	
+	@Column(name="deleted")
+	private boolean isDeleted;
 
 	public String getId() {
 		return id;
@@ -99,6 +102,11 @@ public class User {
 		this.loginType = loginType;
 	}
 
-	
-	
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 }

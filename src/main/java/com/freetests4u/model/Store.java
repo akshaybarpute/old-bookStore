@@ -1,5 +1,7 @@
 package com.freetests4u.model;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,20 +18,26 @@ public class Store {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
-	int id;
+	private int id;
 	
 	@Column(name="bookid")
-	int bookId;
+	private int bookId;
 	
 	@OneToOne
 	@JoinColumn(name="bookid", referencedColumnName="id", insertable = false, updatable = false)
-	Book book;
+	private Book book;
 	
 	@Column(name="bookcount")
-	int bookCount;
+	private int bookCount;
 	
-	@Column(name="isdeleted")
-	boolean isDeleted;
+	@Column(name="created_at")
+	private Timestamp createdAt;
+	
+	@Column(name="updated_at")
+	private Timestamp updatedAt;
+	
+	@Column(name="deleted")
+	private boolean isDeleted;
 
 	public int getId() {
 		return id;
@@ -63,6 +71,22 @@ public class Store {
 		this.bookCount = bookCount;
 	}
 
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Timestamp getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Timestamp updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
 	public boolean isDeleted() {
 		return isDeleted;
 	}
@@ -70,7 +94,7 @@ public class Store {
 	public void setDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-
-
+	
+	
 	
 }

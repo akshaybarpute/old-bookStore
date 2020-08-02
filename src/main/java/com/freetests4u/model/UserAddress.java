@@ -49,6 +49,9 @@ public class UserAddress {
 	@Column(name="zip")
 	private String zipCode;
 	
+	@Column(name="deleted")
+	private boolean isDeleted;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "userid", referencedColumnName = "id", insertable = false, updatable = false)
 	private User user;
@@ -139,6 +142,14 @@ public class UserAddress {
 
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 	public User getUser() {
