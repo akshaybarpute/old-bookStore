@@ -174,6 +174,7 @@ public class SellerRequest {
 		return updatedAt;
 	}
 
+	
 	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
 	}
