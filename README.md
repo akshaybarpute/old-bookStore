@@ -7,7 +7,7 @@ implementation in spring-boot java, then it will be good example for them. This 
 ## Getting Started
 
 1.Make sure you have all the Prerequisites mentioned below installed. 
-2.Run sql commands from startup.sql file.
+2.Run sql commands from db.sql file.
 3.Run command mvn build
 4.Run Application.java file to run server on developement mode
 ### Prerequisites
