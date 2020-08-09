@@ -15,4 +15,7 @@ public interface BookRepository extends JpaRepository<Book,Integer>{
 
 	@Query("FROM Book b WHERE b.title=:title")
 	Collection<Book> getBook(@Param("title") String title);
+	
+	@Query("SELECT distinct(b.category) FROM Book b")
+	List<String> getBookCategories();
 }

@@ -30,6 +30,9 @@ public class Store {
 	@Column(name="bookcount")
 	private int bookCount;
 	
+	@Column(name="sellcount")
+	private int sellCount;
+	
 	@Column(name="created_at")
 	private Timestamp createdAt;
 	
@@ -71,6 +74,14 @@ public class Store {
 		this.bookCount = bookCount;
 	}
 
+	public int getSellCount() {
+		return sellCount;
+	}
+
+	public void setSellCount(int sellCount) {
+		this.sellCount = sellCount;
+	}
+
 	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
@@ -94,7 +105,6 @@ public class Store {
 	public void setDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-	
-	
+
 	
 }
